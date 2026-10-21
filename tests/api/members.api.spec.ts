@@ -63,7 +63,6 @@ test.describe('Members API Suite', { tag: ['@api'] }, () => {
       expect(createResponseBody.data.firstName).toBe(payload.firstName);
     });
 
-    // Verification Step: Get by ID
     await test.step(`Send GET request to /api/members/${memberId} to verify member details`, async () => {
       const getByIdRes = await membersApi.getById(memberId);
       expect(getByIdRes.status()).toBe(200);
@@ -76,7 +75,6 @@ test.describe('Members API Suite', { tag: ['@api'] }, () => {
       expect(getByIdBody.data.emailAddress).toBe(payload.emailAddress);
     });
 
-    // Verification Step: Get All
     await test.step('Send GET request to /api/members to verify member exists in all members list', async () => {
       const getAllRes = await membersApi.getAll();
       expect(getAllRes.status()).toBe(200);
@@ -165,7 +163,6 @@ test.describe('Members API Suite', { tag: ['@api'] }, () => {
       expect(createResponseBody.data.firstName).toBe(payload.firstName);
     });
 
-    // Verification Step: Get by ID
     await test.step(`Send GET request to /api/members/${memberId} to verify minimal member details`, async () => {
       const getByIdRes = await membersApi.getById(memberId);
       expect(getByIdRes.status()).toBe(200);
@@ -176,7 +173,6 @@ test.describe('Members API Suite', { tag: ['@api'] }, () => {
       expect(getByIdBody.data.lastName).toBe(payload.lastName);
     });
 
-    // Verification Step: Get All
     await test.step('Send GET request to /api/members to verify minimal member exists in all members list', async () => {
       const getAllRes = await membersApi.getAll();
       expect(getAllRes.status()).toBe(200);
@@ -324,13 +320,11 @@ test.describe('Members API Suite', { tag: ['@api'] }, () => {
       expect(deleteResponse.status()).toBe(200);
     });
 
-    // Verification Step: Verify deletion status via GET by ID (should return 404 Not Found)
     await test.step(`Send GET request to /api/members/${memberId} to verify deletion status`, async () => {
       const getRes = await membersApi.getById(memberId);
       expect(getRes.status()).toBe(404);
     });
 
-    // Verification Step: Verify deletion status via GET all (should not be present in active members list)
     await test.step('Send GET request to /api/members to verify member list reflects deletion', async () => {
       const getAllRes = await membersApi.getAll();
       expect(getAllRes.status()).toBe(200);

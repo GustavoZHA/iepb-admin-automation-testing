@@ -7,85 +7,61 @@ description: >-
 
 # Skill: Code Comments & Documentation Standards (`code-comments`)
 
-Standard for writing clear, maintainable, and high-value code comments across the automation framework.
+Standard for writing clean, high-value code comments across the automation framework without visual clutter or redundant noise.
 
 ---
 
 ## 🎯 Core Principles
 
-1. **Language:** All comments, docstrings, and annotations must be in **English**.
-2. **Explain "Why", Not "What":** Code explains *what* happens; comments should explain *why* a specific business rule, workaround, or catalog mapping exists.
-3. **No Redundancy with `test.step`:** `test.step` already documents test execution. Avoid writing comments that merely repeat the step title.
-4. **Zero Dead Code:** Never leave commented-out code blocks in committed files. Git tracks historical changes.
+1. **Self-Descriptive Methods Require No Comments:**
+   - If a method name clearly describes what it does (e.g., `get(endpoint)`, `delete(id)`, `close()`, `getByIndex(i)`), do **NOT** add a comment.
+2. **Clear Types Require No `@param` or `@returns`:**
+   - When TypeScript parameter names and return types are self-evident, do **NOT** add redundant `@param` or `@returns` tags.
+3. **Language:** All comments, docstrings, and annotations must be in **English**.
+4. **Explain "Why", Not "What":** Code explains *what* happens; comments should strictly explain non-obvious business rules, algorithms, or database catalog mappings.
+5. **No Redundancy with `test.step`:** `test.step` already documents test execution. Never write comments that duplicate the step title.
+6. **Zero Dead Code:** Never leave commented-out code blocks.
 
 ---
 
-## 📚 Comment Types & When to Use Them
+## 📚 When to Comment vs When NOT to Comment
 
-### 1. JSDoc / TSDoc (`/** ... */`)
-Used for all shared utilities, API clients, Page Objects, Builders, and helper functions.
-
-**Must include:**
-- Brief description of the class, method, or function.
-- `@param` describing purpose of non-obvious arguments.
-- `@returns` describing the returned value.
-
+### ❌ Redundant Comments (Prohibited)
 ```typescript
+// BAD: Method and signature are already completely self-descriptive
 /**
- * Generates three chronological dates fulfilling the business constraint:
- * birthDate < conversionDate < baptismDate.
- *
- * @returns Object containing ISO date strings (YYYY-MM-DD)
+ * Executes a GET request against the specified endpoint.
+ * @param endpoint - Relative API path
+ * @param options - Optional headers
  */
-static generateChronologicalDates(): {
-  birthDate: string;
-  conversionDate: string;
-  baptismDate: string;
-}
-```
-
-### 2. Business Logic / Mapping Comments (`// ...`)
-Used when a value or logic is not obvious from reading the code directly.
-
-**Good Examples:**
-```typescript
-// Gender catalog ID: 0 = Male, 1 = Female (mapped to database Lookups catalog)
-genderId: 1,
-
-// Conversion age is capped to prevent conversion date exceeding current year
-const maxConversionAge = Math.max(minConversionAge + 1, age - 2);
-
-// Append unique timestamp to prevent email collision in database
-emailAddress: `${cleanName}.${timestamp}@gmail.com`,
-```
-
-**Bad Examples (Redundant / Noise):**
-```typescript
-// BAD: Just repeats what the code says
-// Set genderId to 1
-genderId: 1,
+get(endpoint: string, options?: RequestOptions) { ... }
 
 // BAD: Duplicates the test step title
 // Send POST request to /api/members
 await test.step('Send POST request to /api/members', async () => { ... });
 ```
 
-### 3. Action Tags (`TODO:` / `NOTE:`)
-Used for tracking intentional technical notes or future tasks:
+### ✔️ High-Value Comments (Allowed)
+Use comments only when the logic, formula, or constraint cannot be deduced from the name and type alone:
 
 ```typescript
+// Gender catalog ID: 0 = Male, 1 = Female (mapped to database Lookups catalog)
+genderId: 1,
+
+// Conversion age is capped to prevent conversionDate from exceeding the current year
+const maxConversionAge = Math.max(minConversionAge + 1, age - 2);
+
 // NOTE: SQL Server connection uses custom port 20000 in Docker environment
-// TODO: Add support for multi-language validation when frontend supports English
 ```
 
 ---
 
 ## 📋 Summary Checklist
 
-| Category | Standard |
+| Condition | Rule |
 | :--- | :--- |
-| **Language** | Strictly English |
-| **Clients & Utilities (`src/`)** | JSDoc on classes and public methods |
-| **Test Specs (`tests/`)** | Rely on `test.step`; use comments only for complex business rules |
-| **Dead Code** | Delete unused code completely; do not comment it out |
-| **Tags** | Standard uppercase `NOTE:` or `TODO:` |
+| **Clearly named method** | No comment. |
+| **Self-evident parameters & return types** | No `@param` or `@returns` tags. |
+| **Complex algorithm or business constraint** | Brief inline comment explaining the *why*. |
+| **Test steps (`test.step`)** | No comments duplicating step names. |
+| **Dead code** | Delete completely; never comment out. |
