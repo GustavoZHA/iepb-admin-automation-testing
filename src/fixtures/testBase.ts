@@ -2,11 +2,13 @@ import { test as baseTest, expect } from '@playwright/test';
 import { dbClient, DbClient } from '../db/dbClient';
 import { ApiClient } from '../api/apiClient';
 import { LookupsClient } from '../api/clients/lookupsClient';
+import { MembersClient } from '../api/clients/membersClient';
 
 export type CustomFixtures = {
   db: DbClient;
   api: ApiClient;
   lookupsApi: LookupsClient;
+  membersApi: MembersClient;
 };
 
 export const test = baseTest.extend<CustomFixtures>({
@@ -24,6 +26,11 @@ export const test = baseTest.extend<CustomFixtures>({
     // Provide the domain-specific Lookups API Client
     const lookupsClient = new LookupsClient(api);
     await use(lookupsClient);
+  },
+  membersApi: async ({ api }, use) => {
+    // Provide the domain-specific Members API Client
+    const membersClient = new MembersClient(api);
+    await use(membersClient);
   },
 });
 

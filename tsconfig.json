@@ -14,7 +14,9 @@
       "@api/*": ["./src/api/*"],
       "@db/*": ["./src/db/*"],
       "@ui/*": ["./src/ui/*"],
-      "@fixtures/*": ["./src/fixtures/*"]
+      "@fixtures/*": ["./src/fixtures/*"],
+      "@data/*": ["./src/data/*"],
+      "@context/*": ["./src/context/*"]
     }
   },
   "include": [

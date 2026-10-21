@@ -2,7 +2,9 @@ import { test, expect } from '../../src/fixtures/testBase';
 
 test.describe('Database Connectivity Tests', { tag: ['@backend'] }, () => {
   test.afterAll(async ({ db }) => {
-    await db.close();
+    await test.step('DB - Close SQL Server connection pool', async () => {
+      await db.close();
+    });
   });
 
   test('Verify connection and active Microsoft SQL Server version', async ({ db }) => {
