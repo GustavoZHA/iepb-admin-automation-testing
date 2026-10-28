@@ -6,7 +6,7 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 export const env = {
   // Service Base URLs
-  baseUrl: process.env.BASE_URL || 'http://localhost:5173',
+  baseUrl: process.env.BASE_URL || 'http://localhost',
   apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:9002',
 
   // Database Configuration (Read strictly from .env with generic standard fallbacks, zero hardcoded secrets)
